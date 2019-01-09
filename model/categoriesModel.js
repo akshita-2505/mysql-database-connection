@@ -3,12 +3,13 @@ var sql = require('./db.js');
 
 //Task object constructor
 var Task = function(task){
-    this.task = task.task;
-    this.status = task.status;
+    this.name = task.name;
+    this.detail = task.detail;
     this.created_at = new Date();
+    this.updated_at = new Date();
 };
 Task.createTask = function createUser(newTask, result) {
-    sql.query("INSERT INTO tasks set ?", newTask, function (err, res) {
+    sql.query("INSERT INTO categories set ?", newTask, function (err, res) {
 
         if(err) {
             console.log("error: ", err);
@@ -20,8 +21,8 @@ Task.createTask = function createUser(newTask, result) {
         }
     });
 };
-Task.getTaskById = function createUser(taskId, result) {
-    sql.query("Select task from tasks where id = ? ", taskId, function (err, res) {
+Task.getTaskById = function createUser(categoriesId, result) {
+    sql.query("Select task from categories where id = ? ", categoriesId, function (err, res) {
         if(err) {
             console.log("error: ", err);
             result(err, null);
@@ -33,7 +34,7 @@ Task.getTaskById = function createUser(taskId, result) {
     });
 };
 Task.getAllTask = function getAllTask(result) {
-    sql.query("Select * from tasks", function (err, res) {
+    sql.query("Select * from categories", function (err, res) {
 
         if(err) {
             console.log("error: ", err);
@@ -47,18 +48,19 @@ Task.getAllTask = function getAllTask(result) {
     });
 };
 Task.updateById = function(id, task, result){
-    sql.query("UPDATE tasks SET task = ? WHERE id = ?", [task.task, id], function (err, res) {
-        if(err) {
-            console.log("error: ", err);
-            result(null, err);
-        }
-        else{
-            result(null, res);
-        }
-    });
+    sql.query("UPDATE categories SET name = ? , email = ? ,gender = ?, phone_number = ?,password=? WHERE id = ?",
+        [task.name,task.email,task.gender,task.phone_number,task.password, id], function (err, res) {
+            if(err) {
+                console.log("error: ", err);
+                result(null, err);
+            }
+            else{
+                result(null, res);
+            }
+        });
 };
 Task.remove = function(id, result){
-    sql.query("DELETE FROM tasks WHERE id = ?", [id], function (err, res) {
+    sql.query("DELETE FROM categories WHERE id = ?", [id], function (err, res) {
 
         if(err) {
             console.log("error: ", err);
