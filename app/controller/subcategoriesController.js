@@ -1,32 +1,7 @@
-const Products=require('../schemas/productSchema');
-let UPLOAD_PATH = 'public/ProductImages';
-
-exports.uploadProduct = (req, res) => {
-    const {body:{name,cid,scid,image,price,quntity,detail}} = req;
-    console.log("----enter----"+(cid))
-    if(res) {
-        let product= {
-            name,
-            cid,
-            scid,
-            image: req.file && (UPLOAD_PATH+'/'+req.file.filename),
-            price,
-            quntity,
-            detail
-        };
-
-        Products.create(product)
-            .then(() => res.send({product}))
-            .catch((error) => {
-                console.log(error)
-                return res.status(500).send(error)
-            });
-    }
-};
-
+const Subcategories=require('../schemas/subCategoriesSchema');
 
 exports.addUser = (req, res) => {
-    Products.create(req.body)
+    Subcategories.create(req.body)
         .then((data) =>{
             res.status(200).send({data});
         }).catch((err)=>{
@@ -35,8 +10,7 @@ exports.addUser = (req, res) => {
 };
 
 exports.getUser = (req,res) => {
-    //   debugger;
-    Products.findAll({where:{isChecked:false}})
+    Subcategories.findAll({where:{isChecked:false}})
         .then((data) => {
             res.status(200).send({data});
         }).catch((err) => {
@@ -47,7 +21,7 @@ exports.getUser = (req,res) => {
 
 exports.getUserById = (req,res) => {
     //debugger;
-    Products.findOne({where:{id: req.params.productsId}})
+    Subcategories.findOne({where:{id: req.params.usersId}})
         .then((data) =>{
             if(data.isChecked == false){
                 res.status(200).send({data});
@@ -63,14 +37,12 @@ exports.getUserById = (req,res) => {
 }
 
 exports.userUpdateById=(req,res)=>{
-    Products.findById(req.params.productsId)
+    Subcategories.findById(req.params.usersId)
         .then((data) => {
             if(data.isChecked == false){
-                Products.update(req.body,{where:{id:req.params.productsId}})
+                Subcategories.update(req.body,{where:{id:req.params.usersId}})
                     .then((data) =>{
-
                         res.status(200).send({data});
-
                     }).catch((err)=>{
                     res.status(404).send({message: ' Data not Exist'});
                 });
@@ -88,7 +60,7 @@ exports.userUpdateById=(req,res)=>{
 
 
 exports.deleteUser=(req,res)=>{
-    Products.findOne({where:{id: req.params.productsId}})
+    Subcategories.findOne({where:{id: req.params.usersId}})
         .then((data) => {
             if(!data) {
                 res.status(404).send({message: ' Data not Exist'});
@@ -101,7 +73,7 @@ exports.deleteUser=(req,res)=>{
                 }
                 else
                 {
-                    data.update({isChecked: true}, {where: {id: req.params.productsId}}
+                    data.update({isChecked: true}, {where: {id: req.params.usersId}}
                     ).then(() => {
                         res.status(200).send("deleted successfully = " + data);
                     });
@@ -111,3 +83,6 @@ exports.deleteUser=(req,res)=>{
         res.status(404).send(err);
     })
 };
+
+
+

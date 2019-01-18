@@ -1,16 +1,22 @@
 const Sequelize = require('sequelize');
 const {db} = require('../config/db');
+const Categories = require('./categoriesSchema');
 
-const Categories = db.define('categories', {
+const Subcategories = db.define('subcategories', {
     id:{
         type: Sequelize.INTEGER,
         autoIncrement: true,
         primaryKey: true
     },
-    name: {
-        type: Sequelize.STRING
+    cid:{
+        type: Sequelize.INTEGER,
+        allowNull:  false
     },
-    isChecked:{
+    name: {
+        type: Sequelize.STRING,
+        defaultValue: false
+    },
+    isChecked: {
         type: Sequelize.BOOLEAN,
         defaultValue:false
     },
@@ -30,14 +36,16 @@ const Categories = db.define('categories', {
     deleted_by: {
         type: Sequelize.STRING,
         defaultValue: false
+
     }
 });
 
-Categories.sync({force: false}).then((res) => {
+
+Subcategories.belongsTo(Categories, {foreignKey: 'cid'});
+Subcategories.sync({force: false}).then((res) => {
     console.log(res);
 }).catch(err=>{
     console.log(err);
 });
 
-
-module.exports = Categories;
+module.exports = Subcategories;

@@ -4,6 +4,7 @@ var path = require('path');
 var bodyParser=require('body-parser');
 var usersRouter = require('./app/routes/userRoutes');
 var categoriesRouter = require('./app/routes/categoriesRoutes');
+var subcategoriesRouter = require('./app/routes/subcategoriesRouter');
 var productsRouter = require('./app/routes/productRoutes');
 
 var app = express();
@@ -23,9 +24,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/', usersRouter);
-app.use('/',categoriesRouter);
-app.use('/',productsRouter);
+app.use('/users', usersRouter);
+app.use('/categories',categoriesRouter);
+app.use('/subcategories',subcategoriesRouter);
+app.use('/products',productsRouter);
 
 app.use(function(req, res, next) {
   next(createError(404));

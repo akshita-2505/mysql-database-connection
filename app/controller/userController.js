@@ -84,6 +84,20 @@ exports.deleteUser=(req,res)=>{
         res.status(404).send(err);
     })
 };
+
+exports.signIn = (req, res) => {
+    const email = req.body.email;
+    const password = req.body.password;
+    User.findOne({where:{email: email,password:password}}).then((result) => {
+        if(result) {
+            res.status(200).send(result);
+        } else {
+            res.send("data not exits");
+        }
+    }).catch((err)=>{
+        res.status(404).send(err);
+    })
+};
 // User.destroy({where:{id:req.params.usersId}})
 //     .then((data) =>{
 //         if(data){
